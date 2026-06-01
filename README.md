@@ -1,10 +1,10 @@
 # CENProject for Summer 2026: CurrencyCare
 
 # Group Members
-Product Manager: Wilfredo Rodriguez, 
-Scrum Master: Jacob Mcdaniel
-Frontend Dev: Valeriya Lunyakova
-Backend Dev: Christian Shaw
+-Product Manager: Wilfredo Rodriguez 
+-Scrum Master: Jacob Mcdaniel
+-Frontend Dev: Valeriya Lunyakova
+-Backend Dev: Christian Shaw
 
 # Configuration Management
 We will be using GitHub to track our code changes. The main branch is for stable code and team members 
