@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'HackLocal'; /* You can name this anything */
+    src: url('Hack-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'HackLocal', monospace !important;
+}
+
+.main-box {
+    position: relative;
+    border: 3px solid #333333;
+    background-color: whitesmoke;
+    padding: 10px;
+    width: 700px;
+    height: 300px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+body {
+    background-size: 100%;
+    background-image: url('stars.webp');
+}
