@@ -60,16 +60,38 @@ class User:
 def CheckEmailValidity(email):
     if "@" not in email or "." not in email:
         return False
+    last_dot = email.rfind(".")
+    last_at = email.rfind("@")
+    if last_at <= 0 or last_dot < last_at:
+        return False
+    if last_dot == len(email) - 1:
+        return False
+    if not email[last_dot + 1:].isalpha():
+        return False
     return True
 
 def main():
     #Only for testing
-    NewExpense = Expense(10, "Food", "Monday", 1, 1, 2024, "Visa", "Lunch")
-    print(NewExpense)
-    NewExpense.edit_expense(amount=30, description="Dinner")
-    print(NewExpense)
+    user = User("J", "j@j.com", "pass")
+    OneExpense = Expense(10, "Food", "Monday", 1, 1, 2024, "Visa", "Lunch")
+    user.add_expense(OneExpense)
+    TwoExpense = Expense(20, "Flood", "Tuesday", 2, 2, 2024, "Visa", "Lunch")
+    user.add_expense(TwoExpense)
+    ThreeExpense = Expense(30, "Frodo", "Wednesday", 3, 3, 2024, "Visa", "Brunch")
+    user.add_expense(ThreeExpense)
+    print(user.expenses[0])
+    print(user.expenses[1])
+    print(user.expenses[2])
+    user.expenses[0].edit_expense(amount=50, description="Dinner")
+    print(user.expenses[0])
     print(CheckEmailValidity("user@example.com"))
     print(CheckEmailValidity("test"))
+    print(CheckEmailValidity("test@test"))
+    print(CheckEmailValidity("test@test."))
+    print(CheckEmailValidity("@test.com"))
+    print(CheckEmailValidity("test@test.c1m"))
+    print(CheckEmailValidity("test.test@com"))
+    print(CheckEmailValidity("test@test.com"))
     pass
 
 if __name__ == "__main__":
