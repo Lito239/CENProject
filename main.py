@@ -7,6 +7,16 @@ class Card:
 
     def __str__(self):
         return f"Card(card_number='{self.card_number}', cardholder_name='{self.cardholder_name}', expiration_date='{self.expiration_date}')"
+    
+    def edit_card(self, card_number=None, cardholder_name=None, expiration_date=None, cvv=None):
+        if card_number is not None:
+            self.card_number = card_number
+        if cardholder_name is not None:
+            self.cardholder_name = cardholder_name
+        if expiration_date is not None:
+            self.expiration_date = expiration_date
+        if cvv is not None:
+            self.cvv = cvv
 
 class Expense:
     def __init__(self, amount, category, DOTW, day, month, year, card, description=""):
@@ -44,7 +54,7 @@ class User:
     def __init__(self, name, email, password):
         self.name = name
         self.email = email
-        self.password = password #Maybe check strength of password
+        self.password = password #Maybe check strength of password, Suggested password generator?
         self.expenses = []
 
     #Methods
@@ -56,6 +66,18 @@ class User:
             self.expenses.remove(expense)
         else:
             print("Expense not found.")
+
+    def print_expenses(self):
+        for expense in self.expenses:
+            print(expense)
+
+    def edit_user(self, name=None, email=None, password=None):
+        if name is not None:
+            self.name = name
+        if email is not None:
+            self.email = email
+        if password is not None:
+            self.password = password
 
 def CheckEmailValidity(email):
     if "@" not in email or "." not in email:
@@ -70,6 +92,11 @@ def CheckEmailValidity(email):
         return False
     return True
 
+def CheckPasswordStrength(password): #Change to rating system (1-4?)
+    if len(password) < 8:
+        return False
+    return True
+
 def main():
     #Only for testing
     user = User("J", "j@j.com", "pass")
@@ -79,9 +106,7 @@ def main():
     user.add_expense(TwoExpense)
     ThreeExpense = Expense(30, "Frodo", "Wednesday", 3, 3, 2024, "Visa", "Brunch")
     user.add_expense(ThreeExpense)
-    print(user.expenses[0])
-    print(user.expenses[1])
-    print(user.expenses[2])
+    user.print_expenses()
     user.expenses[0].edit_expense(amount=50, description="Dinner")
     print(user.expenses[0])
     print(CheckEmailValidity("user@example.com"))
