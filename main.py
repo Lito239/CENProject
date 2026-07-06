@@ -1,28 +1,30 @@
 class Card:
-    def __init__(self, card_number, cardholder_name, expiration_date, cvv):
-        self.card_number = card_number
+    def __init__(self, card_type, cardholder_name, expiration_date, is_debit, balance):
+        self.card_type = card_type
         self.cardholder_name = cardholder_name
         self.expiration_date = expiration_date
-        self.cvv = cvv
+        self.is_debit = is_debit
+        self.balance = balance
 
     def __str__(self):
-        return f"Card(card_number='{self.card_number}', cardholder_name='{self.cardholder_name}', expiration_date='{self.expiration_date}')"
-    
-    def edit_card(self, card_number=None, cardholder_name=None, expiration_date=None, cvv=None):
-        if card_number is not None:
-            self.card_number = card_number
+        return f"Card(card_type='{self.card_type}', cardholder_name='{self.cardholder_name}', expiration_date='{self.expiration_date}', is_debit={self.is_debit}, balance={self.balance})"
+
+    def edit_card(self, card_type=None, cardholder_name=None, expiration_date=None, is_debit=None, balance=None):
+        if card_type is not None:
+            self.card_type = card_type
         if cardholder_name is not None:
             self.cardholder_name = cardholder_name
         if expiration_date is not None:
             self.expiration_date = expiration_date
-        if cvv is not None:
-            self.cvv = cvv
+        if is_debit is not None:
+            self.is_debit = is_debit
+        if balance is not None:
+            self.balance = balance
 
 class Expense:
-    def __init__(self, amount, category, DOTW, day, month, year, card, description=""):
+    def __init__(self, amount, category, day, month, year, card, description=""):
         self.amount = amount
         self.category = category
-        self.date_DOTW = DOTW #Day of the week (Monday, Tuesday, etc.)
         self.date_day = day
         self.date_month = month
         self.date_year = year
@@ -30,15 +32,13 @@ class Expense:
         self.description = description
 
     def __str__(self):
-        return f"Expense(amount={self.amount}, category='{self.category}', date='{self.date_DOTW}, {self.date_day}/{self.date_month}/{self.date_year}', card='{self.card}', description='{self.description}')"
+        return f"Expense(amount={self.amount}, category='{self.category}', date='{self.date_day}/{self.date_month}/{self.date_year}', card='{self.card}', description='{self.description}')"
 
-    def edit_expense(self, amount=None, category=None, DOTW=None, day=None, month=None, year=None, card=None, description=None):
+    def edit_expense(self, amount=None, category=None, day=None, month=None, year=None, card=None, description=None):
         if amount is not None:
             self.amount = amount
         if category is not None:
             self.category = category
-        if DOTW is not None:
-            self.date_DOTW = DOTW
         if day is not None:
             self.date_day = day
         if month is not None:
@@ -54,7 +54,7 @@ class User:
     def __init__(self, name, email, password):
         self.name = name
         self.email = email
-        self.password = password #Maybe check strength of password, Suggested password generator?
+        self.password = password #Maybe check strength of password
         self.expenses = []
 
     #Methods
@@ -97,14 +97,21 @@ def CheckPasswordStrength(password): #Change to rating system (1-4?)
         return False
     return True
 
+def RandomPasswordGenerator(length=12):
+    import random
+    import string
+    password = "".join(random.choices(string.ascii_letters + string.digits, k=length))
+    #Change to check if the password is string enough
+    return password
+
 def main():
     #Only for testing
     user = User("J", "j@j.com", "pass")
-    OneExpense = Expense(10, "Food", "Monday", 1, 1, 2024, "Visa", "Lunch")
+    OneExpense = Expense(10, "Food", 1, 1, 2024, "Visa", "Lunch")
     user.add_expense(OneExpense)
-    TwoExpense = Expense(20, "Flood", "Tuesday", 2, 2, 2024, "Visa", "Lunch")
+    TwoExpense = Expense(20, "Flood", 2, 2, 2024, "Visa", "Lunch")
     user.add_expense(TwoExpense)
-    ThreeExpense = Expense(30, "Frodo", "Wednesday", 3, 3, 2024, "Visa", "Brunch")
+    ThreeExpense = Expense(30, "Frodo", 3, 3, 2024, "Visa", "Brunch")
     user.add_expense(ThreeExpense)
     user.print_expenses()
     user.expenses[0].edit_expense(amount=50, description="Dinner")
@@ -117,6 +124,7 @@ def main():
     print(CheckEmailValidity("test@test.c1m"))
     print(CheckEmailValidity("test.test@com"))
     print(CheckEmailValidity("test@test.com"))
+    print(RandomPasswordGenerator())
     pass
 
 if __name__ == "__main__":
