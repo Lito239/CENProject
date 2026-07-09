@@ -30,6 +30,44 @@ body {
     background-color: whitesmoke;
 }
 
+/* ------- USER INFO ------- */
+.user-info {
+    position: absolute;
+    width: 700px;
+    height: 15px;
+    top: 0px;
+    left: 0px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    border-bottom: 3px solid #333333;
+    padding: 10px;
+
+    background-color: whitesmoke;
+}
+
+.username {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.settings-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background-color: rgb(195, 195, 227);
+}
+
+.settings-button:hover {
+    background-color: rgb(99, 99, 152);
+    color: white;
+}
+
 /* ------- INNER BOXES ------- */
 .add-transaction {
     position: absolute;
