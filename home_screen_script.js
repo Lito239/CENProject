@@ -131,6 +131,7 @@ document.getElementById("expandButton").addEventListener("change", function() {
 document.getElementById("grayOut").addEventListener("click", function() {
     document.getElementById("historyMenu").style.display = "none";
     document.getElementById("cardMenu").style.display = "none";
+    document.getElementById("settingsMenu").style.display = "none";
     this.style.display = "none";
 });
 
@@ -142,6 +143,16 @@ document.getElementById("closeWindow").addEventListener("click", function() {
 
 document.getElementById("closeCardWindow").addEventListener("click", function() {
     document.getElementById("cardMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
+});
+
+document.getElementById("settingsButton").addEventListener("click", function() {
+    document.getElementById("settingsMenu").style.display = "block";
+    document.getElementById("grayOut").style.display = "block";
+});
+
+document.getElementById("closeSettingsWindow").addEventListener("click", function() {
+    document.getElementById("settingsMenu").style.display = "none";
     document.getElementById("grayOut").style.display = "none";
 });
 
@@ -183,4 +194,10 @@ function saveCardChanges(button) {
     
     recalculateCardBalances();
     renderTables();
+}
+
+/* ------- EDIT USER INFO ------- */
+function saveUserChanges() {
+    document.getElementById("settingsMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
 }
