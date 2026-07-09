@@ -9,6 +9,24 @@
 <body>
 
 <div class="main-box" id="mainBox">
+    <!-- ------- USER INFO ------- -->
+    <div class="user-info" id="userInfo">
+        <span class="username" id="username">Username</span>
+        <button class="settings-button" id="settingsButton">Settings</button> 
+    </div>  
+
+    <div class="settings-menu" id="settingsMenu" style="display: none;">
+        <p>Username</p>
+        <input type="text" id="editUsername" class="input">
+        <br/><br/>
+        <p>Email</p>
+        <input type="email" id="editEmail" class="input">
+        <br/><br/>
+        <p>Password</p>
+        <input type="password" id="editPassword" class="input">
+        <button class="close-window" id="closeSettingsWindow">x</button>
+        <button class="save-button" onclick="saveUserChanges()">Save Changes</button>
+    </div>
 
     <!-- ------- ADD TRANSACTION ------- -->
     <div class="add-transaction" id="addTransaction">
