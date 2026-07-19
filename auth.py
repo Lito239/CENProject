@@ -1,7 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from main import User, CheckEmailValidity, CheckPasswordStrength
+from database import PythonDatabase
 
-registered_users = []
+database.PythonDatabase()
 
 def findUserByEmail(email):
     for user in registered_users:
@@ -34,9 +35,11 @@ def registerUser(name, email, password):
         return False, "Email is already registered"
     
     hashedPassword = generate_password_hash(password)
-    
-    new_user = User(name, email, hashedPassword)
-    registered_users.append(new_user)
+    result = database.add_user(
+        username=name,
+        email=email,
+        password=hashedPassword
+    )
     return True, "User registered successfully"
 
 def loginUser(email,password):
