@@ -12,6 +12,7 @@
     --background-color: whitesmoke;
     --idle-button: rgb(195, 195, 227);
     --on-hover-button: rgb(99, 99, 152);
+    --delete: rgb(195, 144, 144);
 }
 
 * {
@@ -167,9 +168,20 @@ body {
     top: 0px;
     right: 0px;
 
-    background-color: rgb(195, 144, 144);
+    background-color: var(--delete);
 }
 
+.delete-transaction,
+.delete-card {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+
+    background-color: var(--delete);
+}
+
+.delete-transaction:hover,
+.delete-card:hover,
 .close-window:hover {
     background-color: rgb(168, 74, 74);
     color: white;
@@ -225,7 +237,7 @@ tbody tr:hover {
 }
 
 .card-menu {
-    width: 200px;
+    width: 300px;
     height: 200px;
 }
 
