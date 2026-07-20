@@ -1,3 +1,17 @@
+class Goal:
+    def __init__(self, max_spending, current_spending):
+        self.max_spending = max_spending
+        self.current_spending = current_spending
+
+    def __str__(self):
+        return f"Goal(max_spending={self.max_spending}, current_spending={self.current_spending})"
+    
+    def update_spending(self, amount):
+        self.current_spending += amount
+    
+    def edit_max_spending(self, new_max_spending):
+        self.max_spending = new_max_spending
+
 class Card:
     def __init__(self, card_type, cardholder_name, expiration_date, is_debit, balance):
         self.card_type = card_type
@@ -56,6 +70,7 @@ class User:
         self.email = email
         self.password = password #Maybe check strength of password
         self.expenses = []
+        self.goals = []
 
     #Methods
     def add_expense(self, expense):
