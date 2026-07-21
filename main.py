@@ -94,6 +94,24 @@ class User:
         if password is not None:
             self.password = password
 
+    def add_goal(self, goal):
+        self.goals.append(goal)
+
+    def remove_goal(self, goal):
+        if goal in self.goals:
+            self.goals.remove(goal)
+        else:
+            print("Goal not found.")
+
+    def get_expenses_year(self, year):
+        return [expense for expense in self.expenses if expense.date_year == year]
+    
+    def get_expenses_month(self, month, year):
+        return [expense for expense in self.expenses if expense.date_month == month and expense.date_year == year]
+    
+    def get_expenses_week(self, start_date, month, year):
+        return [expense for expense in self.expenses if expense.date_day >= start_date and expense.date_day <= start_date + 6 and expense.date_month == month and expense.date_year == year]
+
 def CheckEmailValidity(email):
     if "@" not in email or "." not in email:
         return False
