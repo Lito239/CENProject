@@ -2,13 +2,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from main import User, CheckEmailValidity, CheckPasswordStrength
 from database import PythonDatabase
 
-database.PythonDatabase()
+database = PythonDatabase()
 
 def findUserByEmail(email):
-    for user in registered_users:
-        if user.email == email:
-            return user
-    return None
+    return database.get_user_by_email(email)
 
 def getPasswordStrengthLevel(password):
     score = CheckPasswordStrength(password)
@@ -40,6 +37,10 @@ def registerUser(name, email, password):
         email=email,
         password=hashedPassword
     )
+    if result == "username already exists":
+        return False, "Username is already registered"
+    if result == "email already exists":
+        return False, "Email is already registered"
     return True, "User registered successfully"
 
 def loginUser(email,password):
@@ -48,7 +49,7 @@ def loginUser(email,password):
     if user is None:
         return False, "User not found"
     
-    if not check_password_hash(user.password, password):
+    if not check_password_hash(user["password"], password):
         return False, "Incorrect password"
     return True, "Login successful"
 

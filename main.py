@@ -92,10 +92,18 @@ def CheckEmailValidity(email):
         return False
     return True
 
-def CheckPasswordStrength(password): #Change to rating system (1-4?)
-    if len(password) < 8:
-        return False
-    return True
+def CheckPasswordStrength(password): 
+    score = 0
+    if len(password) >= 8:
+        score += 1
+    if any(character.isdigit() for character in password):
+        score += 1
+    if (any(character.isupper() for character in password) and any(character.islower() for character in password)):
+        score += 1
+    special_characters = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
+    if any(character in special_characters for character in password):
+        score += 1
+    return score
 
 def RandomPasswordGenerator(length=12):
     import random

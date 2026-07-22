@@ -1,0 +1,19 @@
+{
+    "data": {
+        "users": [
+            {
+                "id": 1,
+                "username": "testuser",
+                "email": "test@example.com",
+                "password": "scrypt:32768:8:1$qPPdlrh8V3rQlAP3$b67a0d3991918d439c107edb67e0d07129570b1cfadd464fa65802347b0a850273e47e2bb1dc5f9255e9ea87192ce6cd4aba837caced2ec108b540948fd72415"
+            }
+        ],
+        "cards": [],
+        "transactions": []
+    },
+    "next_ids": {
+        "users": 2,
+        "cards": 1,
+        "transactions": 1
+    }
+}
