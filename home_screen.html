@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CurrencyCare</title>
+    <link rel="stylesheet" href="home_screen_style.css">
+    <script src="home_screen_script.js" defer></script>
+</head>
+
+<body>
+
+<div class="main-box" id="mainBox">
+
+    <!-- ------- ADD TRANSACTION ------- -->
+    <div class="add-transaction" id="addTransaction">
+        <h2>Add Transaction</h2>
+        <!-- left fields -->
+        <input type="text" id="transactionName" class="input" placeholder="Transaction Name">
+        <br/>
+        <br/>
+        <input type="number" id="amount" class="input" placeholder="Amount">
+        <br/>
+        <br/>
+        <input type="text" id="card" class="input" placeholder="Card">
+        <select id="expandButton" class="expand-button">
+            <option value="" disabled selected hidden></option>
+        </select>
+        <br/>
+        <br/>
+        <button class="add-button" onclick="addTransaction()">Add</button>
+
+        <!-- right fields -->
+        <input type="date" id="transactionDate" class="right-input" placeholder="Date">
+        <br/>
+        <br/>
+        <input type="text" id="transactionFilter" class="right-input" placeholder="Filters">
+    </div>
+
+    <!-- ------- IMPORTANT INFORMATION ------- -->
+    <div class="important-information" id="importantInformation">
+        <h2>Important</h2>
+    </div>
+
+    <!-- ------- HISTORY ------- -->
+    <div class="history" id="history">
+        <h2>History</h2>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Card</th>
+            </tr>
+            <tbody id="historyTable"></tbody>
+        </table>
+    </div>
+
+    <!-- ------- GRAPH ------- -->
+    <div class="graph" id="graph">
+        <h2>Graph</h2>
+    </div>
+
+    <!-- ------- CARD MANAGEMENT ------- -->
+    <div class="card-management" id="cardManagement">
+        <h2>Manage Cards</h2>
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+            </tr>
+            <tbody id="cards"></tbody>
+        </table>
+    </div>
+
+    <!-- ------- OOVERLAY ------- -->
+    <div class="gray-out" id="grayOut" style="display: none;"></div>
+
+    <!-- ------- EDIT MENU ------- -->
+    <!-- transaction edit -->
+    <div class="history-menu" id="historyMenu" style="display: none;">
+        <p>Transaction Name</p>
+        <input type="text" id="editTransactionName" class="input">
+        <br/>
+        <br/>
+        <p>Amount</p>
+        <input type="number" id="editTransactionAmount" class="input">
+        <br/>
+        <br/>
+        <p>Card</p>
+        <input type="input" id="editTransactionCard" class="input">
+        <br/>
+        <br/>
+        <input type="date" id="editTransactionDate" class="input">
+        <br/>
+        <br/>
+        <p>Filters</p>
+        <input type="input" id="editTransactionFilter" class="input">
+
+        <button class="close-window" id="closeWindow">x</button>
+        <button class="save-button" onclick="saveTransactionChanges()">Save Changes</button>
+    </div>
+
+    <!-- card edit -->
+    <div class="card-menu" id="cardMenu" style="display: none;">
+        <p>Card Name</p>
+        <input type="input" id="editCardName" class="input">
+
+        <button class="close-window" id="closeCardWindow">x</button>
+        <button class="save-button" onclick="saveCardChanges()">Save Changes</button>
+    </div>
+</div>
+
+</body>
+</html>
