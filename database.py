@@ -47,6 +47,11 @@ class PythonDatabase:
             if user["email"].lower() == email.lower():
                 return user
         return None
+    def get_user_by_username(self, username):
+        for user in self.data["users"]:
+            if user["username"].lower() == username.lower():
+                return user
+        return None
     def update_user(self, user_id, user_object):
         for stored_user in self.data["users"]:
             if stored_user["id"] == user_id:

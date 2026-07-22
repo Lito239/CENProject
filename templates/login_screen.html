@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CurrencyCare_LogIn</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login_screen_style.css') }}">
+    <script src="{{ url_for('static', filename='login_screen_script.js') }}" defer></script>
+</head>
+
+<body>
+<div class="main-box" id="mainBox">
+    <div>
+        <h1>Log In</h1>
+        {% if loginMessage %}
+            <p>{{ loginMessage }}</p>
+        {% endif %}
+        
+        <form id="loginForm" method="POST">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <br/>
+            <br/>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <br/>
+            <br/>
+            <button type="submit">Log In</button>
+        </form>
+        <br/>
+        <h3>Don't have an account?</h3>
+        <a>
+            <button type="button" onclick="window.location.href='{{ url_for("registerPage") }}'">
+    Sign In
+</button>
+        </a>
+    </div>
+</div>
+
+</body>
+
+</html>

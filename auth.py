@@ -7,6 +7,9 @@ database = PythonDatabase()
 def findUserByEmail(email):
     return database.get_user_by_email(email)
 
+def findUserByUsername(username):
+    return database.get_user_by_username(username)
+
 def getPasswordStrengthLevel(password):
     score = CheckPasswordStrength(password)
     
@@ -43,8 +46,8 @@ def registerUser(name, email, password):
         return False, "Email is already registered"
     return True, "User registered successfully"
 
-def loginUser(email,password):
-    user = findUserByEmail(email)
+def loginUser(userName, password):
+    user = findUserByUsername(userName)
     
     if user is None:
         return False, "User not found"
