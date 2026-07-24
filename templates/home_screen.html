@@ -9,7 +9,13 @@
 <body>
 
 <div class="main-box" id="mainBox">
-
+    <!-- ------- LOG OUT ------- -->
+     <button
+        type = "button"
+        onclick ="window.location.href ='{{ url_for('logoutPage') }}'">
+        Log Out
+    </button>
+    
     <!-- ------- ADD TRANSACTION ------- -->
     <div class="add-transaction" id="addTransaction">
         <h2>Add Transaction</h2>

@@ -6,13 +6,25 @@
                 "username": "testuser",
                 "email": "test@example.com",
                 "password": "scrypt:32768:8:1$qPPdlrh8V3rQlAP3$b67a0d3991918d439c107edb67e0d07129570b1cfadd464fa65802347b0a850273e47e2bb1dc5f9255e9ea87192ce6cd4aba837caced2ec108b540948fd72415"
+            },
+            {
+                "id": 2,
+                "username": "test",
+                "email": "testing123@gmail.com",
+                "password": "scrypt:32768:8:1$Ljx0B5OgBKWZof0S$9b60857d8ae43611d75adb1c479aa7b3ac0395072272ec5257fe86e4e836e1519df50b23707964fb273c49a47808ea71b1cd8b9cd381a258c3db2950687cea6e"
+            },
+            {
+                "id": 3,
+                "username": "testing",
+                "email": "tester@gmail.com",
+                "password": "scrypt:32768:8:1$X6xrTmYkkgNI18oT$8005440c95192661b00b6975122f09e04b6c571430631d874d00c8c5d57e8b21ed0ab4f6ca6e3c26d76a8bc9f0832de3b005bbe32a78306ced7f1d78bda1d351"
             }
         ],
         "cards": [],
         "transactions": []
     },
     "next_ids": {
-        "users": 2,
+        "users": 4,
         "cards": 1,
         "transactions": 1
     }
