@@ -8,8 +8,21 @@
 let transactionHistory = [];
 let cards = [];
 
+if (Array.isArray(window.savedTransactions)){
+    transactionHistory = window.savedTransactions.map(function(transaction){
+        return {
+            id: transaction.id,
+            name: transaction.transaction_name,
+            amount: transaction.amount,
+            card: transaction.card_name || "",
+            date: transaction.transaction_date,
+            filter: transaction.category
+        };
+    });
+}
+
 /* ------- ADD TRANSACTION ------- */
-function addTransaction() {
+async function addTransaction() {
     // stores typed values
     var transactionName = document.getElementById("transactionName").value;
     var amount = document.getElementById("amount").value;
@@ -22,17 +35,40 @@ function addTransaction() {
         alert("Invalid transaction.");
         return;
     }
+    try{
+        var response = await fetch("/transactions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                transactionName: transactionName, 
+                amount: amount,
+                card: card,
+                transactionDate: date,
+                category: filter
+            })
+        });
+        var result = await response.json();
+        if (!response.ok){
+            alert(result.message);
+            return;
+        }
+        transactionHistory.push(result.transaction);
+            // resets the fields in the "Add Transaction" section
+        document.getElementById("transactionName").value = "";
+        document.getElementById("amount").value = "";
+        document.getElementById("card").value = "";
+        document.getElementById("transactionDate").value = "";
+        document.getElementById("transactionFilter").value = "";
+        recalculateCardBalances();
+        renderTables();
 
-    // adds transaction to the history array
-    transactionHistory.push({name: transactionName, amount: amount, card: card, date: date, filter: filter});
-
-    // resets the fields in the "Add Transaction" section
-    document.getElementById("transactionName").value = "";
-    document.getElementById("amount").value = "";
-    document.getElementById("card").value = "";
-
-    recalculateCardBalances();
-    renderTables();
+    }
+    catch(error){
+        console.error(error);
+        alert("The transaction could not be saved.");
+    }
 }
 
 /* ------- RECALCULATION ------- */
@@ -184,3 +220,6 @@ function saveCardChanges(button) {
     recalculateCardBalances();
     renderTables();
 }
+//Load saved data when the page opens
+recalculateCardBalances();
+renderTables();

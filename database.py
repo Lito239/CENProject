@@ -88,11 +88,12 @@ class PythonDatabase:
                 self.save()
                 return True
         return False
-    def add_transaction(self, user_id, card_id, transaction_name, amount=None, transaction_date=None, category=None):
+    def add_transaction(self, user_id, card_id, transaction_name, amount=None, transaction_date=None, category=None, card_name = None):
         new_transaction = {
             "id": self.next_ids["transactions"],
             "user_id": user_id,
             "card_id": card_id,
+            "card_name": card_name,
             "transaction_name": transaction_name,
             "amount": amount,
             "transaction_date": transaction_date,

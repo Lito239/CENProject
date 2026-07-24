@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from auth import registerUser, loginUser
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from auth import registerUser, loginUser, database
 
 app = Flask(__name__)
 app.secret_key = "currencycare-development-key"
@@ -45,12 +45,80 @@ def registerPage():
 def homePage():
     if "username" not in session:
         return redirect(url_for("loginPage"))
-    return render_template("home_screen.html")
+    username = session["username"]
+    user = database.get_user_by_username(username)
+    if user is None:
+        session.clear()
+        return redirect(url_for("loginPage"))
+    transactions = database.get_transactions(user["id"])
+    return render_template("home_screen.html", transactions = transactions)
 
 @app.route("/logout", methods=["GET"])
 def logoutPage():
     session.clear()
     return redirect(url_for("loginPage"))
 
+@app.route("/transactions", methods = ["POST"])
+def addTransaction():
+    if "username" not in session:
+        return jsonify({
+            "successful": False,
+            "message": "You must be logged in."
+        }), 401
+    transactionData = request.get_json()
+
+    if transactionData is None:
+        return jsonify({
+            "successful": False,
+            "message": "No transaction data received."
+        }),400
+    transactionName = transactionData.get("transactionName", "").strip()
+    amount = transactionData.get("amount")
+    transactionDate = transactionData.get("transactionDate")
+    category = transactionData.get("category")
+    cardName = transactionData.get("card", "").strip()
+
+    if transactionName == "" or amount in (None, ""):
+        return jsonify({
+            "successful": False, 
+            "message": "Transaction name and amount are required."
+        }), 400
+    try:
+        amount = float(amount)
+    except (TypeError, ValueError):
+        return jsonify({
+            "successful": False,
+            "message": "Amount must be a valid number."
+        }), 400
+    username = session["username"]
+    user = database.get_user_by_username(username)
+
+    if user is None:
+        return jsonify({
+            "successful": False,
+            "message": "Logged-in user could not be found."
+        }), 404
+    transactionID = database.add_transaction(
+        user["id"],
+        None,
+        transactionName,
+        amount,
+        transactionDate,
+        category,
+        cardName
+    )
+    return jsonify({
+        "successful": True,
+        "message": "Transaction saved.",
+        "transaction":{
+            "id": transactionID,
+            "name": transactionName,
+            "amount": amount,
+            "card": transactionData.get("card", ""),
+            "date": transactionDate,
+            "filter": category
+        }
+    })
+    
 if __name__ == "__main__":
     app.run(debug=True)
