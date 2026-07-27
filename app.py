@@ -119,6 +119,33 @@ def addTransaction():
             "filter": category
         }
     })
-    
+
+@app.route("/transactions/<int:transactionID>", methods=["DELETE"])
+def deleteTransaction(transactionID):
+    if "username" not in session:
+        return jsonify({
+            "successful": False, 
+            "message": "You must be logged in."
+        }), 401
+    username = session["username"]
+    user = database.get_user_by_username(username)
+    if user is None:
+        return jsonify({
+            "successful": False,
+            "message": "Logged-in user could not be found."
+        }), 404
+    transactionDeleted = database.delete_transaction(
+        transactionID,
+        user["id"]
+    )
+    if not transactionDeleted:
+        return jsonify({
+            "successful": False,
+            "message": "Transaction could not be found."
+        }), 404
+    return jsonify({
+        "successful": True,
+        "message": "Transaction deleted."
+    })
 if __name__ == "__main__":
     app.run(debug=True)

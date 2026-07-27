@@ -21,28 +21,7 @@
             }
         ],
         "cards": [],
-        "transactions": [
-            {
-                "id": 1,
-                "user_id": 3,
-                "card_id": null,
-                "transaction_name": "Publix",
-                "amount": 42.5,
-                "transaction_date": "2026-07-24",
-                "category": "Groceries",
-                "card_name": "Visa"
-            },
-            {
-                "id": 2,
-                "user_id": 3,
-                "card_id": null,
-                "transaction_name": "Walmart",
-                "amount": 50.0,
-                "transaction_date": "2026-07-24",
-                "category": "Groceries",
-                "card_name": "Visa"
-            }
-        ]
+        "transactions": []
     },
     "next_ids": {
         "users": 4,

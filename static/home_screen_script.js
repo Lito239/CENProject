@@ -71,6 +71,32 @@ async function addTransaction() {
     }
 }
 
+/* ------- DELETE TRANSACTION ------- */
+async function deleteTransaction(event, transactionID, transactionIndex){
+    event.stopPropagation();
+    var confirmed = confirm("Are you sure you want to delete this transaction?");
+    if(!confirmed){
+        return;
+    }
+    try{
+        var response = await fetch("/transactions/" + transactionID, {
+            method: "DELETE"
+        });
+        var result = await response.json();
+        if(!response.ok){
+            alert(result.message);
+            return;
+        }
+        transactionHistory.splice(transactionIndex, 1);
+        cards =[];
+        recalculateCardBalances();
+        renderTables();
+    }
+    catch(error){
+        console.error(error);
+        alert("Failed to delete transaction.");
+    }
+}
 /* ------- RECALCULATION ------- */
 function recalculateCardBalances() {
     cards.forEach(function(card) {
@@ -107,7 +133,7 @@ function renderTransactionHistory() {
     // show transactions from transactionHistory array in history table
     transactionHistory.forEach(function(transaction, i) {
         var row = document.createElement("tr");
-        row.innerHTML = "<td>" +  transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>";
+        row.innerHTML = "<td>" +  transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>" + "<td><button class='delete-button' onclick='deleteTransaction(event, " + transaction.id + ", "+ i+ ")'>Delete</button></td>";
 
         row.addEventListener("click", function () {
             var menu = document.getElementById("historyMenu");
