@@ -172,7 +172,7 @@ body {
 }
 
 .delete-transaction,
-.delete-card {
+.delete-card{
     position: absolute;
     bottom: 20px;
     left: 10px;
@@ -180,9 +180,21 @@ body {
     background-color: var(--delete);
 }
 
+.logout-page {
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+
+    z-index: 11;
+
+    background-color: var(--delete);
+}
+
 .delete-transaction:hover,
 .delete-card:hover,
-.close-window:hover {
+.close-window:hover,
+.logout-page:hover {
     background-color: rgb(168, 74, 74);
     color: white;
 }
