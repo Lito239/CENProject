@@ -147,5 +147,62 @@ def deleteTransaction(transactionID):
         "successful": True,
         "message": "Transaction deleted."
     })
+@app.route("/transactions/<int:transactionID>", methods=["PUT"])
+def editTransaction(transactionID):
+    if "username" not in session:
+        return jsonify({
+            "successful": False,
+            "message": "You must be logged in."
+        }), 401
+    transactionData = request.get_json(silent=True)
+    transactionName = transactionData.get("transactionName", "").strip()
+    amount = transactionData.get("amount")
+    transactionDate = transactionData.get("transactionDate")
+    category = transactionData.get("category")
+    cardName = transactionData.get("card", "").strip()
+    if transactionName == "" or amount in (None, ""):
+        return jsonify({
+            "successful": False,
+            "message": "Transaction name and amount are required."
+        }), 400
+    try:
+        amount = float(amount)
+    except (TypeError, ValueError):
+        return jsonify({
+            "successful": False,
+            "message": "Amount must be a valid number."
+        }), 400
+    user = database.get_user_by_username(session["username"])
+    if user is None:
+        return jsonify({
+            "successful": False,
+            "message": "Logged-in user could not be found."
+        }), 404
+    transactionUpdated = database.update_transaction(
+        transaction_id=transactionID,
+        user_id=user["id"],
+        transaction_name=transactionName,
+        amount=amount,
+        transaction_date=transactionDate,
+        category=category,
+        card_name=cardName
+    )
+    if not transactionUpdated:
+        return jsonify({
+            "successful": False,
+            "message": "Transaction could not be updated."
+        }), 404
+    return jsonify({
+        "successful": True,
+        "message": "Transaction updated.",
+        "transaction": {
+            "id": transactionID,
+            "name": transactionName,
+            "amount": amount,
+            "card": cardName,
+            "date": transactionDate,
+            "filter": category
+        }
+    })
 if __name__ == "__main__":
     app.run(debug=True)
