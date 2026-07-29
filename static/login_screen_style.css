@@ -1,12 +1,19 @@
 @font-face {
-    font-family: 'HackLocal'; /* You can name this anything */
+    font-family: 'HackLocal';
     src: url('Hack-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 * {
+    box-sizing: border-box;
     font-family: 'HackLocal', monospace !important;
+}
+
+.input {
+    height: 26px;
+    padding: 5px;
+    background-color: white;
 }
 
 .main-box {
@@ -23,4 +30,15 @@
 body {
     background-size: 100%;
     background-image: url('stars.webp');
+}
+
+.login-button,
+.singin-button {
+    background-color: rgb(195, 195, 227);
+}
+
+.login-button:hover,
+.singin-button:hover {
+    background-color: rgb(99, 99, 152);
+    color: white;
 }
