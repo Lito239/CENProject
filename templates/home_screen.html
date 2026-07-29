@@ -49,15 +49,18 @@
     <!-- ------- HISTORY ------- -->
     <div class="history" id="history">
         <h2>History</h2>
-        <table border="1">
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Card</th>
-                <th>Delete</th>
-            </tr>
-            <tbody id="historyTable"></tbody>
-        </table>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Card</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- ------- GRAPH ------- -->
@@ -68,13 +71,17 @@
     <!-- ------- CARD MANAGEMENT ------- -->
     <div class="card-management" id="cardManagement">
         <h2>Manage Cards</h2>
-        <table border="1">
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-            </tr>
-            <tbody id="cards"></tbody>
-        </table>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="cards"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- ------- OOVERLAY ------- -->
