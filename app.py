@@ -51,7 +51,7 @@ def homePage():
         session.clear()
         return redirect(url_for("loginPage"))
     transactions = database.get_transactions(user["id"])
-    return render_template("home_screen.html", transactions = transactions)
+    return render_template("home_screen.html", transactions = transactions, username = username)
 
 @app.route("/logout", methods=["GET"])
 def logoutPage():
