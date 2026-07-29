@@ -11,7 +11,7 @@
 <div class="main-box" id="mainBox">
     <!-- ------- USER INFO ------- -->
     <div class="user-info" id="userInfo">
-        <span class="username" id="username">Username</span>
+        <span class="username" id="username">{{ username }}</span>
         <button class="logout-page" type = "button"
             onclick ="window.location.href ='{{ url_for('logoutPage') }}'">
             Log Out
