@@ -24,6 +24,7 @@ def loginPage():
             loginMessage = loginMessage)
     return render_template("login_screen.html")
 
+
 @app.route("/register", methods=["GET", "POST"])
 def registerPage():
     if request.method == "POST":
@@ -35,10 +36,10 @@ def registerPage():
         if registrationSuccessful:
             session["username"] = username
             return redirect(url_for("homePage"))
-        
+
         return render_template(
-            "singin_screen.html", 
-            registrationMessage = registrationMessage)
+            "singin_screen.html",
+            registrationMessage=registrationMessage)
     return render_template("singin_screen.html")
 
 @app.route("/home", methods=["GET"])
