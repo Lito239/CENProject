@@ -1,9 +1,3 @@
-/* 
-------- TO-DO -------
-- Add an option to delete a transaction
-- Add an option to sort/filter cards by differnt factors
-*/
-
 /* ------- VARIABLES ------- */
 let transactionHistory = [];
 let cards = [];
@@ -72,14 +66,18 @@ async function addTransaction() {
 }
 
 /* ------- DELETE TRANSACTION ------- */
-async function deleteTransaction(event, transactionID, transactionIndex){
-    event.stopPropagation();
+async function deleteTransaction(){
+    var menu = document.getElementById("historyMenu");
+    var transactionIndex = menu.editIndex;
+    var transaction = transactionHistory[transactionIndex];
+
     var confirmed = confirm("Are you sure you want to delete this transaction?");
     if(!confirmed){
         return;
     }
+
     try{
-        var response = await fetch("/transactions/" + transactionID, {
+        var response = await fetch("/transactions/" + transaction.id, {
             method: "DELETE"
         });
         var result = await response.json();
@@ -96,7 +94,16 @@ async function deleteTransaction(event, transactionID, transactionIndex){
         console.error(error);
         alert("Failed to delete transaction.");
     }
+
+    document.getElementById("historyMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
 }
+
+/* ------- DELETE CARD ------- */
+async function deleteCard() {
+
+}
+
 /* ------- RECALCULATION ------- */
 function recalculateCardBalances() {
     cards.forEach(function(card) {
@@ -133,7 +140,7 @@ function renderTransactionHistory() {
     // show transactions from transactionHistory array in history table
     transactionHistory.forEach(function(transaction, i) {
         var row = document.createElement("tr");
-        row.innerHTML = "<td>" +  transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>" + "<td><button class='delete-button' onclick='deleteTransaction(event, " + transaction.id + ", "+ i+ ")'>Delete</button></td>";
+        row.innerHTML = "<td>" +  transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>";
 
         row.addEventListener("click", function () {
             var menu = document.getElementById("historyMenu");
@@ -264,6 +271,7 @@ function saveUserChanges() {
     document.getElementById("settingsMenu").style.display = "none";
     document.getElementById("grayOut").style.display = "none";
 }
+
 //Load saved data when the page opens
 recalculateCardBalances();
 renderTables();
