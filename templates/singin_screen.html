@@ -9,10 +9,9 @@
 <body>
 <div class="main-box" id="mainBox">
     <div>
- <h1>Sign In</h1>
-
+         <h1>Sign In</h1>
         {% if registerMessage %}
-            <p>{{ registerMessage }}</p>
+            <p class="error-message">{{ registerMessage }}</p>
         {% endif %}
 
         <form id="signinForm" method="POST">
