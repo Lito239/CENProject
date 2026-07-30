@@ -42,3 +42,15 @@ body {
     background-color: rgb(99, 99, 152);
     color: white;
 }
+
+.error-message {
+    position: absolute;
+    top: 20%;
+    left: 11%;
+    transform: translateX(-50%);
+
+    font-size: 15px;
+
+    color: red;
+    z-index: 5;
+}
