@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'HackLocal'; /* You can name this anything */
+    font-family: 'HackLocal';
     src: url('Hack-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
@@ -39,4 +39,16 @@ body {
 .sign-up-button:hover {
     background-color: rgb(99, 99, 152);
     color: white;
+}
+
+.error-message {
+    position: absolute;
+    top: 20%;
+    left: 11%;
+    transform: translateX(-50%);
+
+    font-size: 15px;
+
+    color: red;
+    z-index: 5;
 }
