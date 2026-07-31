@@ -243,6 +243,20 @@ thead th {
     z-index: 1;
 }
 
+.sortable-header{
+    cursor:pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+.sort-arrow{
+    display: inline-block;
+    width: 12px;
+}
+.sortable-header:hover {
+    background-color: var(--on-hover-button);
+    color: white;
+}
+
 /* ------- EDIT MENU ------- */
 .history-menu,
 .card-menu,

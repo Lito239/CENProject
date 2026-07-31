@@ -69,9 +69,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Card</th>
+                        <th id="dateHeader" class="sortable-header" onclick="sortTransactions('date')">Date <span class="sort-arrow"></span></th>
+                        <th id="nameHeader" class="sortable-header" onclick="sortTransactions('name')">Name <span class="sort-arrow"></span></th>
+                        <th id="amountHeader" class="sortable-header" onclick="sortTransactions('amount')">Amount <span class="sort-arrow"></span></th>
+                        <th id="cardHeader" class="sortable-header" onclick="sortTransactions('card')">Card <span class="sort-arrow"></span></th>
                     </tr>
                 </thead>
                 <tbody id="historyTable"></tbody>

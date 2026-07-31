@@ -18,14 +18,51 @@
                 "username": "testing",
                 "email": "tester@gmail.com",
                 "password": "scrypt:32768:8:1$X6xrTmYkkgNI18oT$8005440c95192661b00b6975122f09e04b6c571430631d874d00c8c5d57e8b21ed0ab4f6ca6e3c26d76a8bc9f0832de3b005bbe32a78306ced7f1d78bda1d351"
+            },
+            {
+                "id": 4,
+                "username": "Testes",
+                "email": "tester@yahoo.com",
+                "password": "scrypt:32768:8:1$LIqpeZ5T2GS0AjqT$1688c0e484e30d4e7b576f694a2f72b31f5bd386c17dc0593e541c95d7ef5ab800d5310429eea28dbbf877b75fae643c22b1464f63e0cae28720b87c51b13c89"
             }
         ],
         "cards": [],
-        "transactions": []
+        "transactions": [
+            {
+                "id": 5,
+                "user_id": 3,
+                "card_id": null,
+                "card_name": "Visa",
+                "transaction_name": "Publix",
+                "amount": 50.0,
+                "transaction_date": "2026-07-30",
+                "category": "Groceries"
+            },
+            {
+                "id": 6,
+                "user_id": 3,
+                "card_id": null,
+                "card_name": "Mastercard",
+                "transaction_name": "Walmart",
+                "amount": 75.0,
+                "transaction_date": "2026-07-28",
+                "category": ""
+            },
+            {
+                "id": 7,
+                "user_id": 3,
+                "card_id": null,
+                "card_name": "Amex",
+                "transaction_name": "dAbaby",
+                "amount": 0.22,
+                "transaction_date": "2026-02-28",
+                "category": ""
+            }
+        ]
     },
     "next_ids": {
-        "users": 4,
+        "users": 5,
         "cards": 1,
-        "transactions": 3
+        "transactions": 8
     }
 }

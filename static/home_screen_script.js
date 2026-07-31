@@ -1,7 +1,14 @@
 /* ------- VARIABLES ------- */
 let transactionHistory = [];
 let cards = [];
-
+var currentSortType = "";
+var sortAscending = true;
+var headerNames ={
+    date: "Date",
+    name: "Name",
+    amount: "Amount",
+    card: "Card"
+};
 if (Array.isArray(window.savedTransactions)){
     transactionHistory = window.savedTransactions.map(function(transaction){
         return {
@@ -140,7 +147,7 @@ function renderTransactionHistory() {
     // show transactions from transactionHistory array in history table
     transactionHistory.forEach(function(transaction, i) {
         var row = document.createElement("tr");
-        row.innerHTML = "<td>" +  transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>";
+        row.innerHTML = "<td>" +  transaction.date + "</td><td>" + transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>";
 
         row.addEventListener("click", function () {
             var menu = document.getElementById("historyMenu");
@@ -158,6 +165,50 @@ function renderTransactionHistory() {
     });
 }
 
+function sortTransactions(sortType){
+    if (currentSortType === sortType){
+        sortAscending = !sortAscending;
+    }
+    else{
+        currentSortType = sortType;
+        sortAscending = true;
+    }
+    transactionHistory.sort(function(a,b){
+        var comparison = 0;
+
+    if (sortType ==="date"){
+    comparison = new Date(a.date) - new Date(b.date);
+    }
+    else if (sortType === "name"){
+        comparison = a.name.localeCompare(b.name);
+    }
+    else if (sortType === "amount"){
+        comparison =Number(a.amount) - Number(b.amount);
+    }
+    else if (sortType === "card"){
+        comparison = a.card.localeCompare(b.card)
+    }
+    if(sortAscending){
+        return comparison;
+    }
+    else{
+        return -comparison;
+    }
+    });
+    document.querySelectorAll(".sort-arrow").forEach(function(arrow){
+        arrow.innerHTML ="";
+    });
+    var currentHeader = document.getElementById(sortType +"Header");
+    var currentArrow = currentHeader.querySelector(".sort-arrow");
+    if (sortAscending){
+        currentArrow.textContent = "▲";
+    }
+    else{
+        currentArrow.textContent = "▼";
+    }
+    renderTransactionHistory();
+}
+    
 function renderCards() {
     var cardManagement = document.getElementById("cards");
     cardManagement.innerHTML = "";
