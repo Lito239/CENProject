@@ -92,8 +92,17 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
+                        <th id="cardNameHeader"
+                            class="sortable-header"
+                            onclick="sortCards('name')">
+                            Name <span class="card-sort-arrow"></span>
+                        </th>
+
+                        <th id="cardAmountHeader"
+                            class="sortable-header"
+                            onclick="sortCards('amount')">
+                            Amount <span class="card-sort-arrow"></span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="cards"></tbody>

@@ -252,6 +252,10 @@ thead th {
     display: inline-block;
     width: 12px;
 }
+.card-sort-arrow{
+    display: inline-block;
+    width: 12px;
+}
 .sortable-header:hover {
     background-color: var(--on-hover-button);
     color: white;

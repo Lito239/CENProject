@@ -3,6 +3,8 @@ let transactionHistory = [];
 let cards = [];
 var currentSortType = "";
 var sortAscending = true;
+var currentCardSortType ="";
+var cardSortAscending =true;
 var headerNames ={
     date: "Date",
     name: "Name",
@@ -208,7 +210,49 @@ function sortTransactions(sortType){
     }
     renderTransactionHistory();
 }
-    
+
+function sortCards(sortType){
+    if (currentCardSortType === sortType){
+        cardSortAscending = !cardSortAscending;
+    }
+    else{
+        currentCardSortType = sortType;
+        cardSortAscending = true;
+    }
+    cards.sort(function(a,b){
+        var comparison =0;
+        if(sortType ==="name"){
+            comparison =a.name.localeCompare(b.name);
+        }
+        else if(sortType==="amount"){
+            comparison =Number(a.balance)-Number(b.balance);
+        }
+        if(cardSortAscending){
+            return comparison;
+        }
+        else{
+            return -comparison;
+        }
+    });
+    document.querySelectorAll(".card-sort-arrow").forEach(function(arrow){
+        arrow.textContent="";
+    });
+    var currentHeader;
+    if(sortType ==="name"){
+        currentHeader =document.getElementById("cardNameHeader");
+    }
+    else{
+        currentHeader=document.getElementById("cardAmountHeader");
+    }
+    var currentArrow=currentHeader.querySelector(".card-sort-arrow");
+    if(cardSortAscending){
+        currentArrow.textContent= "▲"
+    }
+    else{
+        currentArrow.textContent= "▼"
+    }
+    renderCards();
+}
 function renderCards() {
     var cardManagement = document.getElementById("cards");
     cardManagement.innerHTML = "";
