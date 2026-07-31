@@ -82,7 +82,24 @@
 
     <!-- ------- GRAPH ------- -->
     <div class="graph" id="graph">
-        <h2>Graph</h2>
+        <div class ="goal-header">
+            <h2>Goals</h2>
+            <div class ="goal-controls">
+                <select id="goalDropdown" class="goal-dropdown">
+                    <option selected disabled>Select Goal</option>
+                </select>
+
+                <button id="addGoalButton" class="goal-add-button">+</button>
+            </div>
+        </div>
+        <div class="goal-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="goalProgressFill"></div>
+            </div>
+            <p id="goalProgressText">
+                No Goal Selected
+            </p>
+        </div>
     </div>
 
     <!-- ------- CARD MANAGEMENT ------- -->
@@ -149,7 +166,6 @@
         <button class="save-button" onclick="saveCardChanges()">Save Changes</button>
     </div>
 </div>
-
 <script>
     window.savedTransactions = {{ transactions | tojson}};
 </script>
