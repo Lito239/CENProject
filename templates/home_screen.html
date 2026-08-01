@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <!-- ------- GRAPH ------- -->
+    <!-- ------- GOALS ------- -->
     <div class="graph" id="graph">
         <div class ="goal-header">
             <h2>Goals</h2>
@@ -165,6 +165,15 @@
         <button class="close-window" id="closeCardWindow">x</button>
         <button class="delete-card" onclick="deleteCard()">Delete Card</button>
         <button class="save-button" onclick="saveCardChanges()">Save Changes</button>
+    </div>
+
+    <!-- add goal -->
+    <div class="add-goal" id="addGoal" style="display: none;">
+        <p>Set Goal</p>
+        <input type="number" id="addGoalNumber" class="input">
+
+        <button class="close-window" id="closeGoalWindow">x</button>
+        <button class="save-button" onclick="saveCardChanges()">Save Goal</button>
     </div>
 </div>
 <script>
