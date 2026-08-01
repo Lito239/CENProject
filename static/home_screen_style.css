@@ -140,6 +140,20 @@ body {
 #transactionDate { top: 78px; }
 #transactionFilter { top: 120px; }
 
+.notes {
+    right: 10px;
+    height: 60%;
+    width: 100%;
+
+
+
+    padding: 5px;
+
+    background-color: white;
+
+    resize: none;
+}
+
 /* ------- BUTTONS ------- */
 .add-button {
     position: absolute;
@@ -301,4 +315,13 @@ thead th {
     z-index: 10;
 
     background-color: rgba(122, 120, 124, 0.5);
+}
+
+/* ------- GOALS ------- */
+.goal-dropdown {
+    background-color: white;
+}
+
+.goal-add-button {
+    background: white;
 }
