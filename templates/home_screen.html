@@ -59,7 +59,8 @@
 
     <!-- ------- IMPORTANT INFORMATION ------- -->
     <div class="important-information" id="importantInformation">
-        <h2>Important</h2>
+        <h2>Notes</h2>
+        <textarea type="text" id="notes" class="notes" placeholder="Notes" ></textarea>
     </div>
 
     <!-- ------- HISTORY ------- -->
@@ -69,10 +70,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th id="dateHeader" class="sortable-header" onclick="sortTransactions('date')">Date <span class="sort-arrow"></span></th>
                         <th id="nameHeader" class="sortable-header" onclick="sortTransactions('name')">Name <span class="sort-arrow"></span></th>
                         <th id="amountHeader" class="sortable-header" onclick="sortTransactions('amount')">Amount <span class="sort-arrow"></span></th>
                         <th id="cardHeader" class="sortable-header" onclick="sortTransactions('card')">Card <span class="sort-arrow"></span></th>
+                        <th id="dateHeader" class="sortable-header" onclick="sortTransactions('date')">Date <span class="sort-arrow"></span></th>
                     </tr>
                 </thead>
                 <tbody id="historyTable"></tbody>
