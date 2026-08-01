@@ -278,7 +278,8 @@ thead th {
 /* ------- EDIT MENU ------- */
 .history-menu,
 .card-menu,
-.settings-menu {
+.settings-menu,
+.add-goal{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -297,7 +298,8 @@ thead th {
     height: 500px;
 }
 
-.card-menu {
+.card-menu,
+.add-goal {
     width: 300px;
     height: 200px;
 }
