@@ -1,13 +1,16 @@
-/* 
-------- TO-DO -------
-- Add an option to delete a transaction
-- Add an option to sort/filter cards by differnt factors
-*/
-
 /* ------- VARIABLES ------- */
 let transactionHistory = [];
 let cards = [];
-
+var currentSortType = "";
+var sortAscending = true;
+var currentCardSortType ="";
+var cardSortAscending =true;
+var headerNames ={
+    date: "Date",
+    name: "Name",
+    amount: "Amount",
+    card: "Card"
+};
 if (Array.isArray(window.savedTransactions)){
     transactionHistory = window.savedTransactions.map(function(transaction){
         return {
@@ -72,14 +75,18 @@ async function addTransaction() {
 }
 
 /* ------- DELETE TRANSACTION ------- */
-async function deleteTransaction(event, transactionID, transactionIndex){
-    event.stopPropagation();
+async function deleteTransaction(){
+    var menu = document.getElementById("historyMenu");
+    var transactionIndex = menu.editIndex;
+    var transaction = transactionHistory[transactionIndex];
+
     var confirmed = confirm("Are you sure you want to delete this transaction?");
     if(!confirmed){
         return;
     }
+
     try{
-        var response = await fetch("/transactions/" + transactionID, {
+        var response = await fetch("/transactions/" + transaction.id, {
             method: "DELETE"
         });
         var result = await response.json();
@@ -96,7 +103,16 @@ async function deleteTransaction(event, transactionID, transactionIndex){
         console.error(error);
         alert("Failed to delete transaction.");
     }
+
+    document.getElementById("historyMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
 }
+
+/* ------- DELETE CARD ------- */
+async function deleteCard() {
+
+}
+
 /* ------- RECALCULATION ------- */
 function recalculateCardBalances() {
     cards.forEach(function(card) {
@@ -133,7 +149,7 @@ function renderTransactionHistory() {
     // show transactions from transactionHistory array in history table
     transactionHistory.forEach(function(transaction, i) {
         var row = document.createElement("tr");
-        row.innerHTML = "<td>" +  transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>" + "<td><button class='delete-button' onclick='deleteTransaction(event, " + transaction.id + ", "+ i+ ")'>Delete</button></td>";
+        row.innerHTML = "<td>" + transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>" + "<td>" +  transaction.date + "</td>";
 
         row.addEventListener("click", function () {
             var menu = document.getElementById("historyMenu");
@@ -151,6 +167,92 @@ function renderTransactionHistory() {
     });
 }
 
+function sortTransactions(sortType){
+    if (currentSortType === sortType){
+        sortAscending = !sortAscending;
+    }
+    else{
+        currentSortType = sortType;
+        sortAscending = true;
+    }
+    transactionHistory.sort(function(a,b){
+        var comparison = 0;
+
+    if (sortType ==="date"){
+    comparison = new Date(a.date) - new Date(b.date);
+    }
+    else if (sortType === "name"){
+        comparison = a.name.localeCompare(b.name);
+    }
+    else if (sortType === "amount"){
+        comparison =Number(a.amount) - Number(b.amount);
+    }
+    else if (sortType === "card"){
+        comparison = a.card.localeCompare(b.card)
+    }
+    if(sortAscending){
+        return comparison;
+    }
+    else{
+        return -comparison;
+    }
+    });
+    document.querySelectorAll(".sort-arrow").forEach(function(arrow){
+        arrow.innerHTML ="";
+    });
+    var currentHeader = document.getElementById(sortType +"Header");
+    var currentArrow = currentHeader.querySelector(".sort-arrow");
+    if (sortAscending){
+        currentArrow.textContent = "▲";
+    }
+    else{
+        currentArrow.textContent = "▼";
+    }
+    renderTransactionHistory();
+}
+
+function sortCards(sortType){
+    if (currentCardSortType === sortType){
+        cardSortAscending = !cardSortAscending;
+    }
+    else{
+        currentCardSortType = sortType;
+        cardSortAscending = true;
+    }
+    cards.sort(function(a,b){
+        var comparison =0;
+        if(sortType ==="name"){
+            comparison =a.name.localeCompare(b.name);
+        }
+        else if(sortType==="amount"){
+            comparison =Number(a.balance)-Number(b.balance);
+        }
+        if(cardSortAscending){
+            return comparison;
+        }
+        else{
+            return -comparison;
+        }
+    });
+    document.querySelectorAll(".card-sort-arrow").forEach(function(arrow){
+        arrow.textContent="";
+    });
+    var currentHeader;
+    if(sortType ==="name"){
+        currentHeader =document.getElementById("cardNameHeader");
+    }
+    else{
+        currentHeader=document.getElementById("cardAmountHeader");
+    }
+    var currentArrow=currentHeader.querySelector(".card-sort-arrow");
+    if(cardSortAscending){
+        currentArrow.textContent= "▲"
+    }
+    else{
+        currentArrow.textContent= "▼"
+    }
+    renderCards();
+}
 function renderCards() {
     var cardManagement = document.getElementById("cards");
     cardManagement.innerHTML = "";
@@ -193,6 +295,7 @@ document.getElementById("expandButton").addEventListener("change", function() {
 document.getElementById("grayOut").addEventListener("click", function() {
     document.getElementById("historyMenu").style.display = "none";
     document.getElementById("cardMenu").style.display = "none";
+    document.getElementById("settingsMenu").style.display = "none";
     this.style.display = "none";
 });
 
@@ -204,6 +307,17 @@ document.getElementById("closeWindow").addEventListener("click", function() {
 
 document.getElementById("closeCardWindow").addEventListener("click", function() {
     document.getElementById("cardMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
+});
+
+// settings
+document.getElementById("settingsButton").addEventListener("click", function() {
+    document.getElementById("settingsMenu").style.display = "block";
+    document.getElementById("grayOut").style.display = "block";
+});
+
+document.getElementById("closeSettingsWindow").addEventListener("click", function() {
+    document.getElementById("settingsMenu").style.display = "none";
     document.getElementById("grayOut").style.display = "none";
 });
 
@@ -246,6 +360,13 @@ function saveCardChanges(button) {
     recalculateCardBalances();
     renderTables();
 }
+
+/* ------- EDIT USER INFO ------- */
+function saveUserChanges() {
+    document.getElementById("settingsMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
+}
+
 //Load saved data when the page opens
 recalculateCardBalances();
 renderTables();
