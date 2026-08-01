@@ -296,6 +296,7 @@ document.getElementById("grayOut").addEventListener("click", function() {
     document.getElementById("historyMenu").style.display = "none";
     document.getElementById("cardMenu").style.display = "none";
     document.getElementById("settingsMenu").style.display = "none";
+    document.getElementById("addGoal").style.display = "none";
     this.style.display = "none";
 });
 
@@ -307,6 +308,17 @@ document.getElementById("closeWindow").addEventListener("click", function() {
 
 document.getElementById("closeCardWindow").addEventListener("click", function() {
     document.getElementById("cardMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
+});
+
+// goal
+document.getElementById("addGoalButton").addEventListener("click", function() {
+    document.getElementById("addGoal").style.display = "block";
+    document.getElementById("grayOut").style.display = "block";
+});
+
+document.getElementById("closeGoalWindow").addEventListener("click", function() {
+    document.getElementById("addGoal").style.display = "none";
     document.getElementById("grayOut").style.display = "none";
 });
 
