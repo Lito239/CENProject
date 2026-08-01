@@ -149,7 +149,7 @@ function renderTransactionHistory() {
     // show transactions from transactionHistory array in history table
     transactionHistory.forEach(function(transaction, i) {
         var row = document.createElement("tr");
-        row.innerHTML = "<td>" +  transaction.date + "</td><td>" + transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>";
+        row.innerHTML = "<td>" + transaction.name + "</td><td>" + transaction.amount + "</td><td>" + transaction.card + "</td>" + "<td>" +  transaction.date + "</td>";
 
         row.addEventListener("click", function () {
             var menu = document.getElementById("historyMenu");
