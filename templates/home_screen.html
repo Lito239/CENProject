@@ -91,15 +91,18 @@
                 </select>
 
                 <button id="addGoalButton" class="goal-add-button">+</button>
+                <button id="editGoalButton" class="goal-edit-button">Edit</button>
             </div>
         </div>
         <div class="goal-progress">
             <div class="progress-bar">
                 <div class="progress-fill" id="goalProgressFill"></div>
             </div>
+            <p id="goalDateText"></p>
             <p id="goalProgressText">
                 No Goal Selected
             </p>
+            <p id="goalPercentText"></p>
         </div>
     </div>
 
@@ -174,10 +177,26 @@
 
         <button class="close-window" id="closeGoalWindow">x</button>
         <button class="save-button" onclick="saveCardChanges()">Save Goal</button>
+    <div class="goal-menu" id="goalMenu" style="display: none;">
+        <p>Goal Name</p>
+        <input type="text" id="goalName" class="input">
+        <br><br>
+        <p>Start Date</p>
+        <input type="date" id="goalStartDate" class="input">
+        <br><br>
+        <p>End Date</p>
+        <input type="date" id="goalEndDate" class="input">
+        <br><br>
+        <p>Goal Amount ($)</p>
+        <input type="number" id="goalAmount" class="input">
+        <button class="close-window" id="closeGoalWindow">x</button>
+        <button class ="delete-goal" id="deleteGoalButton">Delete Goal</button>
+        <button class="save-button" onclick="addGoal()">Save Goal</button>
     </div>
 </div>
 <script>
     window.savedTransactions = {{ transactions | tojson}};
+    window.savedGoals = {{goals | tojson}};
 </script>
 </body>
 </html>

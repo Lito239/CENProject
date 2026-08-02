@@ -119,7 +119,49 @@ body {
     grid-column: 2;
     grid-row: 4;
 }
-
+.goal-header{
+    text-align:center;
+}
+.goal-controls{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+.goal-dropdown{
+    max-width:250px;
+}
+.goal-progress{
+    margin-top: 25px;
+    text-align: center;
+}
+.progress-bar{
+    width:100%;
+    height:38px;
+    border:var(--border);
+    background-color: white;
+    overflow:hidden;
+}
+.progress-fill{
+    width:0%;
+    height: 100%;
+    background-color: var(--on-hover-button);
+    transition:width 0.4s ease;
+}
+#goalProgressText{
+    margin-top: 6px;
+    margin-bottom:6px;
+}
+#goalDateText{
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+#goalPercentText{
+    margin-top:6px;
+    font-size:20px;
+    font-weight: bold;
+}
 /* ------- INPUTS ------- */
 .input {
     height: 26px;
@@ -280,6 +322,8 @@ thead th {
 .card-menu,
 .settings-menu,
 .add-goal{
+.settings-menu, 
+.goal-menu{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -307,6 +351,10 @@ thead th {
 .settings-menu {
     width: 320px;
     height: 300px;
+}
+.goal-menu{
+    width:320px;
+    height:430px;
 }
 
 /* ------- OVERLAY ------- */

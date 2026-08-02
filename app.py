@@ -52,7 +52,8 @@ def homePage():
         session.clear()
         return redirect(url_for("loginPage"))
     transactions = database.get_transactions(user["id"])
-    return render_template("home_screen.html", transactions = transactions, username = username)
+    goals = database.get_goals(user["id"])
+    return render_template("home_screen.html", transactions = transactions, username = username, goals=goals)
 
 @app.route("/logout", methods=["GET"])
 def logoutPage():
@@ -120,7 +121,136 @@ def addTransaction():
             "filter": category
         }
     })
-
+@app.route("/goals", methods=["POST"])
+def addGoal():
+    if "username" not in session:
+        return jsonify({
+            "successful": False,
+            "message":"You must be logged in."
+        }), 401
+    goalData=request.get_json()
+    if goalData is None:
+        return jsonify({
+            "successful": False,
+            "message": "No goal data received."
+        }), 400
+    goalName = goalData.get("goalName").strip()
+    startDate =goalData.get("startDate")
+    endDate=goalData.get("endDate")
+    goalAmount= goalData.get("goalAmount")
+    if goalName=="" or startDate =="" or endDate =="" or goalAmount in(None, ""):
+        return jsonify({
+            "successful": False,
+            "message": "All goal fields are required."
+        }),400
+    try:
+        goalAmount = float(goalAmount)
+    except (TypeError, ValueError):
+        return jsonify({
+            "successful": False, 
+            "message": "Goal amount must be a valid number."
+        }),400
+    if goalAmount <= 0:
+        return jsonify({
+            "successful": False,
+            "message": "Goal amount must be greater than zero."
+        }), 400
+    if endDate< startDate:
+        return jsonify({
+            "successful": False,
+            "message": "End date cannot be before start date."
+        }), 400
+    username = session["username"]
+    user =database.get_user_by_username(username)
+    if user is None:
+        return jsonify({
+            "successful": False,
+            "message": "Logged-in user could not be found."
+        }), 404
+    goalID = database.add_goal(
+        user["id"], goalName, startDate, endDate, goalAmount
+    )
+    return jsonify({
+        "successful": True, "message": "Goal saved.", "goal":{ "id": goalID, "name": goalName, "startDate":startDate, "endDate": endDate, "goalAmount": goalAmount}
+    })
+@app.route("/goals/<int:goalID>",methods=["PUT"])
+def updateGoal(goalID):
+    if "username" not in session:
+        return jsonify({
+            "successful":False,
+            "message": "You must be logged in."
+        }),401
+    goalData = request.get_json()
+    if goalData is None:
+        return jsonify({
+            "successful": False,
+            "message":"No goal data received."
+        }),400
+    goalName =goalData.get("goalName","").strip()
+    startDate=goalData.get("startDate")
+    endDate=goalData.get("endDate")
+    goalAmount=goalData.get("goalAmount")
+    if goalName =="" or startDate=="" or endDate=="" or goalAmount in (None,""):
+        return jsonify({
+            "successful": False,
+            "message":"All goal fields are required."
+        }), 400
+    try:
+        goalAmount = float(goalAmount)
+    except (TypeError,ValueError):
+        return jsonify({
+            "successful": False,
+            "message": "Goal amount must be a valid number."
+        }),400
+    if goalAmount<=0:
+        return jsonify({
+            "successful": False,
+            "message":"Goal amount must be greater than zero."
+        }), 400
+    if endDate< startDate:
+        return jsonify({
+            "successful": False,
+            "message": "End date cannot be before start date."
+        }), 400
+    username = session["username"]
+    user = database.get_user_by_username(username)
+    if user is None:
+        return jsonify({
+            "successful": False,
+            "message": "Logged-in user could not be found."
+        }), 404
+    goalUpdated = database.update_goal(goalID, user["id"], goalName, startDate, endDate, goalAmount)
+    if not goalUpdated:
+        return jsonify({
+            "successful": False, "message": "Goal could not be found."
+        }), 404
+    return jsonify({
+        "successful": True, "message":"Goal updated.", "goal":{ "id": goalID, "name": goalName,"startDate": startDate,
+                                                               "endDate":endDate,"goalAmount":goalAmount}
+    })
+@app.route("/goals/<int:goalID>", methods=["DELETE"])
+def deleteGoal(goalID):
+    if"username" not in session: 
+        return jsonify({
+            "successful":False, "message": "You must be logged in."
+        }),401
+    username=session["username"]
+    user =database.get_user_by_username(username)
+    if user is None:
+        return jsonify({
+            "successful":False,
+            "message": "Logged-in user could not be found."
+        }),404
+    goalDeleted=database.delete_goal(
+        goalID, user["id"]
+    )
+    if not goalDeleted:
+        return jsonify({
+            "successful": False, "message": "Goal could not be found."
+        }),404
+    return jsonify({
+        "successful":True, "message":"Goal deleted."
+    })
 @app.route("/transactions/<int:transactionID>", methods=["DELETE"])
 def deleteTransaction(transactionID):
     if "username" not in session:
