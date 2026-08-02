@@ -374,9 +374,9 @@ thead th {
 
 .goal-add-button,
 .goal-edit-button {
-    background-color:var (--idle-button);
+    background-color: var(--idle-button);
 }
 .goal-add-button:hover, .goal-edit-button:hover{
-    background-color:var(--on-hover-button);
-    color:white;
+    background-color: var(--on-hover-button);
+    color: white;
 }
