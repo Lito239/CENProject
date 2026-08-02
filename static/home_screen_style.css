@@ -20,6 +20,10 @@
     font-family: 'HackLocal', monospace !important;
 }
 
+p {
+    margin-bottom: 0px;
+}
+
 body {
     background-image: url('stars.webp');
     background-size: 100%;
@@ -248,6 +252,10 @@ body {
 }
 
 .delete-goal {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+
     background-color: var(--delete);
 }
 
