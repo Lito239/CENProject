@@ -247,10 +247,15 @@ body {
     background-color: var(--delete);
 }
 
+.delete-goal {
+    background-color: var(--delete);
+}
+
 .delete-transaction:hover,
 .delete-card:hover,
 .close-window:hover,
-.logout-page:hover {
+.logout-page:hover,
+.delete-goal:hover{
     background-color: rgb(168, 74, 74);
     color: white;
 }
