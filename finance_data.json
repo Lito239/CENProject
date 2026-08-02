@@ -58,11 +58,22 @@
                 "transaction_date": "2026-02-28",
                 "category": ""
             }
+        ],
+        "goals": [
+            {
+                "id": 1,
+                "user_id": 3,
+                "goal_name": "July",
+                "start_date": "2026-07-01",
+                "end_date": "2026-07-31",
+                "goal_amount": 1234.0
+            }
         ]
     },
     "next_ids": {
         "users": 5,
         "cards": 1,
-        "transactions": 8
+        "transactions": 8,
+        "goals": 2
     }
 }

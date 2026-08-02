@@ -321,8 +321,6 @@ thead th {
 .history-menu,
 .card-menu,
 .settings-menu,
-.add-goal{
-.settings-menu, 
 .goal-menu{
     position: absolute;
     top: 50%;
@@ -342,8 +340,7 @@ thead th {
     height: 500px;
 }
 
-.card-menu,
-.add-goal {
+.card-menu{
     width: 300px;
     height: 200px;
 }
@@ -370,8 +367,16 @@ thead th {
 /* ------- GOALS ------- */
 .goal-dropdown {
     background-color: white;
+    cursor: pointer;
+    border: 1px solid #333333;
 }
 
-.goal-add-button {
-    background: white;
+
+.goal-add-button,
+.goal-edit-button {
+    background-color:var (--idle-button);
+}
+.goal-add-button:hover, .goal-edit-button:hover{
+    background-color:var(--on-hover-button);
+    color:white;
 }
