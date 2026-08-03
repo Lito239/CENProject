@@ -2,8 +2,8 @@ import json
 class PythonDatabase:
     def __init__(self):
         self.filename = "finance_data.json"
-        self.data = {"users": [], "cards": [], "transactions": []}
-        self.next_ids = {"users": 1, "cards": 1, "transactions": 1}
+        self.data = {"users": [], "cards": [], "transactions": [], "goals":[]}
+        self.next_ids = {"users": 1, "cards": 1, "transactions": 1, "goals":1}
         self.load()
     def load(self):
         try:
@@ -11,6 +11,11 @@ class PythonDatabase:
                 saved = json.load(file)
                 self.data = saved["data"]
                 self.next_ids = saved["next_ids"]
+                if "goals" not in self.data:
+                    self.data["goals"]=[]
+                if "goals" not in self.next_ids:
+                    self.next_ids["goals"] =1
+                self.save()
         except (FileNotFoundError, json.JSONDecodeError):
             self.save()
     def save(self):
@@ -106,7 +111,32 @@ class PythonDatabase:
 
     def get_transactions(self, user_id):
         return [transaction for transaction in self.data["transactions"] if transaction["user_id"] == user_id]
-
+    def add_goal(self,user_id,goal_name, start_date, end_date,goal_amount):
+        new_goal={
+            "id": self.next_ids["goals"], "user_id": user_id, "goal_name":goal_name,"start_date":start_date,"end_date":end_date,"goal_amount":goal_amount}
+        self.data["goals"].append(new_goal)
+        self.next_ids["goals"]+=1
+        self.save()
+        return new_goal["id"]
+    def get_goals(self,user_id):
+        return[goal for goal in self.data["goals"] if goal["user_id"]==user_id]
+    def update_goal(self, goal_id, user_id,goal_name,start_date, end_date,goal_amount):
+        for goal in self.data["goals"]:
+            if goal["id"] ==goal_id and goal["user_id"]==user_id:
+                goal["goal_name"] =goal_name
+                goal["start_date"] =start_date
+                goal["end_date"] =end_date
+                goal["goal_amount"] =goal_amount
+                self.save()
+                return True
+        return False
+    def delete_goal(self, goal_id, user_id):
+        for goal in self.data["goals"]:
+            if goal["id"]==goal_id and goal["user_id"]==user_id:
+                self.data["goals"].remove(goal)
+                self.save()
+                return True
+        return False
     def update_transaction(self, transaction_id, user_id, transaction_name=None, amount=None, card_id=None, transaction_date=None, category=None):
         expense_object = transaction_name if hasattr(transaction_name, "date_day") else None
         for transaction in self.data["transactions"]:

@@ -1,6 +1,14 @@
 /* ------- VARIABLES ------- */
 let transactionHistory = [];
 let cards = [];
+let goals=[];
+let currentSelectedGoal =null;
+let editingGoalIndex =null;
+if (window.savedGoals){
+    goals = window.savedGoals.map(function(goal){
+        return{ id:goal.id, name:goal.goal_name, startDate: goal.start_date, endDate: goal.end_date, goalAmount: goal.goal_amount};
+    });
+}
 var currentSortType = "";
 var sortAscending = true;
 var currentCardSortType ="";
@@ -107,7 +115,105 @@ async function deleteTransaction(){
     document.getElementById("historyMenu").style.display = "none";
     document.getElementById("grayOut").style.display = "none";
 }
-
+/* ------- Add Goals ------- */
+async function addGoal(){
+    var goalName=document.getElementById("goalName").value;
+    var startDate=document.getElementById("goalStartDate").value;
+    var endDate=document.getElementById("goalEndDate").value;
+    var goalAmount =document.getElementById("goalAmount").value;
+    if(goalName ==="" || startDate ===""|| endDate===""||goalAmount===""){
+        alert("Please complete every field!");
+        return;
+    }
+    try{
+        var url="/goals";
+        var method ="POST";
+        if (editingGoalIndex !=null){
+            url="/goals/"+goals[editingGoalIndex].id;
+            method="PUT";
+        }
+        var response = await fetch(url,{method:method, 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                goalName: goalName, startDate:startDate, endDate: endDate, goalAmount:goalAmount
+            })
+        });
+        var result =await response.json();
+        if(!response.ok){
+            alert(result.message);
+            return;
+         }
+        var wasEditing=editingGoalIndex!=null;
+        var editedIndex=editingGoalIndex;
+        if(!wasEditing){
+            goals.push(result.goal);
+        }
+        else{
+            goals[editedIndex]=result.goal;
+        }
+        editingGoalIndex=null;
+        renderGoalDropdown();
+        if(wasEditing){
+            document.getElementById("goalDropdown").value=editedIndex;
+            currentSelectedGoal=result.goal;
+            updateGoalProgress(currentSelectedGoal);
+        }
+        document.getElementById("goalName").value="";
+        document.getElementById("goalStartDate").value="";
+        document.getElementById("goalEndDate").value="";
+        document.getElementById("goalAmount").value="";
+        document.getElementById("goalMenu").style.display="none";
+        document.getElementById("grayOut").style.display="none";
+        console.log(goals);
+    }
+    catch(error){
+        console.error(error);
+        alert("The goal could not be saved.");
+}
+}
+async function deleteGoal() {
+    if(editingGoalIndex==null){
+        alert("Please select and edit a goal first.");
+        return;
+    }
+    var goal=goals[editingGoalIndex];
+    var confirmed = confirm("Are you sure you want to delete this goal?");
+    if(!confirmed){
+        return;
+    }
+    try{
+        var response =await fetch("/goals/" +goal.id, { method:"DELETE"});
+    goals.splice(editingGoalIndex,1);
+    editingGoalIndex=null;
+    currentSelectedGoal=null;
+    renderGoalDropdown();
+    document.getElementById("goalProgressFill").style.width="0%";
+    document.getElementById("goalProgressText").textContent= "No Goal Selected";
+    document.getElementById("goalMenu").style.display ="none";
+    document.getElementById("grayOut").style.display ="none";
+    }
+    catch(error){
+        console.error(error);
+        alert("The goal could not be deleted.");
+    }
+}
+function renderGoalDropdown(){
+    var renderGoalDropdown =document.getElementById("goalDropdown");
+    renderGoalDropdown.innerHTML="";
+    var defaultOption=document.createElement("option");
+    defaultOption.textContent="Select Goal";
+    defaultOption.disabled =true;
+    defaultOption.selected =true;
+    renderGoalDropdown.appendChild(defaultOption);
+    goals.forEach(function(goal,i){
+        var option=document.createElement("option");
+        option.value=i;
+        option.textContent= goal.name;
+    renderGoalDropdown.appendChild(option);
+    });
+}
 /* ------- DELETE CARD ------- */
 async function deleteCard() {
 
@@ -140,6 +246,9 @@ function renderTables() {
     renderTransactionHistory();
     renderCards();
     renderCardOptions();
+    if(currentSelectedGoal !=null){
+        updateGoalProgress(currentSelectedGoal);
+    }
 }
 
 function renderTransactionHistory() {
@@ -296,6 +405,7 @@ document.getElementById("grayOut").addEventListener("click", function() {
     document.getElementById("historyMenu").style.display = "none";
     document.getElementById("cardMenu").style.display = "none";
     document.getElementById("settingsMenu").style.display = "none";
+    document.getElementById("goalMenu").style.display = "none";
     this.style.display = "none";
 });
 
@@ -320,7 +430,48 @@ document.getElementById("closeSettingsWindow").addEventListener("click", functio
     document.getElementById("settingsMenu").style.display = "none";
     document.getElementById("grayOut").style.display = "none";
 });
+document.getElementById("addGoalButton").addEventListener("click", function () {
+    editingGoalIndex=null;
+    document.getElementById("deleteGoalButton").style.display="none";
+    document.getElementById("goalName").value="";
+    document.getElementById("goalStartDate").value="";
+    document.getElementById("goalEndDate").value="";
+    document.getElementById("goalAmount").value="";
+    document.getElementById("goalMenu").style.display = "block";
+    document.getElementById("grayOut").style.display = "block";
 
+});
+document.getElementById("closeGoalWindow").addEventListener("click", function () {
+    document.getElementById("goalMenu").style.display = "none";
+    document.getElementById("grayOut").style.display = "none";
+});
+document.getElementById("goalDropdown").addEventListener("change", function(){
+    currentSelectedGoal =goals[this.value];
+    if(currentSelectedGoal){
+        updateGoalProgress(currentSelectedGoal);
+    }
+});
+document.getElementById("editGoalButton").addEventListener("click",function(){
+    var goalDropDown=document.getElementById("goalDropdown");
+    var selectedIndex=goalDropDown.value;
+    if(selectedIndex===""){
+        alert("Please select a goal first.");
+        return;
+    }
+    document.getElementById("deleteGoalButton").style.display="block";
+    editingGoalIndex=Number(selectedIndex);
+    var selectedGoal =goals[editingGoalIndex];
+    document.getElementById("goalName").value=selectedGoal.name;
+    document.getElementById("goalStartDate").value=selectedGoal.startDate;
+    document.getElementById("goalEndDate").value=selectedGoal.endDate;
+    document.getElementById("goalAmount").value=selectedGoal.goalAmount;
+    document.getElementById("goalMenu").style.display="block";
+    document.getElementById("grayOut").style.display="block";
+    
+});
+document.getElementById("deleteGoalButton").addEventListener("click", function(){
+    deleteGoal();
+});
 /* ------- EDITORS ------- */
 function saveTransactionChanges(button) {
     var menu = document.getElementById("historyMenu");
@@ -360,7 +511,38 @@ function saveCardChanges(button) {
     recalculateCardBalances();
     renderTables();
 }
-
+function updateGoalProgress(goal){
+    var moneySpent =0;
+    transactionHistory.forEach(function(transaction){
+        if( transaction.date>= goal.startDate && transaction.date<= goal.endDate)
+        {
+            moneySpent += Number(transaction.amount);
+        }
+    });
+    var actualPercent =0;
+    
+    if(goal.goalAmount>0){
+        actualPercent=(moneySpent/goal.goalAmount) *100;
+    }
+    var barPercent = actualPercent;
+    if(barPercent>100){
+        barPercent=100;
+    }
+    var progressFill = document.getElementById("goalProgressFill")
+    if(actualPercent<75){
+        progressFill.style.backgroundColor ="rgb(99,99,152)";
+    }
+    else if (actualPercent<100){
+        progressFill.style.backgroundColor ="rgb(210,180,60)";
+    }
+    else{
+        progressFill.style.backgroundColor ="rgb(168,74,74)";
+    }
+    progressFill.style.width = barPercent+ "%";
+    document.getElementById("goalDateText").textContent= goal.startDate +" to " + goal.endDate;
+    document.getElementById("goalProgressText").textContent="$"+moneySpent.toFixed(2)+ " / $" + Number(goal.goalAmount).toFixed(2);
+    document.getElementById("goalPercentText").textContent= actualPercent.toFixed(1) +"%";
+}
 /* ------- EDIT USER INFO ------- */
 function saveUserChanges() {
     document.getElementById("settingsMenu").style.display = "none";
@@ -370,3 +552,4 @@ function saveUserChanges() {
 //Load saved data when the page opens
 recalculateCardBalances();
 renderTables();
+renderGoalDropdown();

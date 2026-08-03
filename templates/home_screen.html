@@ -9,12 +9,28 @@
 <body>
 
 <div class="main-box" id="mainBox">
-    <!-- ------- LOG OUT ------- -->
-     <button
-        type = "button"
-        onclick ="window.location.href ='{{ url_for('logoutPage') }}'">
-        Log Out
-    </button>
+    <!-- ------- USER INFO ------- -->
+    <div class="user-info" id="userInfo">
+        <span class="username" id="username">{{ username }}</span>
+        <button class="logout-page" type = "button"
+            onclick ="window.location.href ='{{ url_for('logoutPage') }}'">
+            Log Out
+        </button>
+        <button class="settings-button" id="settingsButton">Settings</button>
+    </div>
+
+    <div class="settings-menu" id="settingsMenu" style="display: none;">
+        <p>Username</p>
+        <input type="text" id="editUsername" class="input">
+        <br/>
+        <p>Email</p>
+        <input type="email" id="editEmail" class="input">
+        <br/>
+        <p>Password</p>
+        <input type="password" id="editPassword" class="input">
+        <button class="close-window" id="closeSettingsWindow">x</button>
+        <button class="save-button" onclick="saveUserChanges()">Save Changes</button>
+    </div>
     
     <!-- ------- ADD TRANSACTION ------- -->
     <div class="add-transaction" id="addTransaction">
@@ -43,38 +59,76 @@
 
     <!-- ------- IMPORTANT INFORMATION ------- -->
     <div class="important-information" id="importantInformation">
-        <h2>Important</h2>
+        <h2>Notes</h2>
+        <textarea type="text" id="notes" class="notes" placeholder="Notes" ></textarea>
     </div>
 
     <!-- ------- HISTORY ------- -->
     <div class="history" id="history">
         <h2>History</h2>
-        <table border="1">
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Card</th>
-                <th>Delete</th>
-            </tr>
-            <tbody id="historyTable"></tbody>
-        </table>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th id="nameHeader" class="sortable-header" onclick="sortTransactions('name')">Name <span class="sort-arrow"></span></th>
+                        <th id="amountHeader" class="sortable-header" onclick="sortTransactions('amount')">Amount <span class="sort-arrow"></span></th>
+                        <th id="cardHeader" class="sortable-header" onclick="sortTransactions('card')">Card <span class="sort-arrow"></span></th>
+                        <th id="dateHeader" class="sortable-header" onclick="sortTransactions('date')">Date <span class="sort-arrow"></span></th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable"></tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- ------- GRAPH ------- -->
+    <!-- ------- GOALS ------- -->
     <div class="graph" id="graph">
-        <h2>Graph</h2>
+        <div class ="goal-header">
+            <h2>Goals</h2>
+            <div class ="goal-controls">
+                <select id="goalDropdown" class="goal-dropdown">
+                    <option selected disabled>Select Goal</option>
+                </select>
+
+                <button id="addGoalButton" class="goal-add-button">+</button>
+                <button id="editGoalButton" class="goal-edit-button">Edit</button>
+            </div>
+        </div>
+        <div class="goal-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="goalProgressFill"></div>
+            </div>
+            <p id="goalDateText"></p>
+            <p id="goalProgressText">
+                No Goal Selected
+            </p>
+            <p id="goalPercentText"></p>
+        </div>
     </div>
 
     <!-- ------- CARD MANAGEMENT ------- -->
     <div class="card-management" id="cardManagement">
         <h2>Manage Cards</h2>
-        <table border="1">
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-            </tr>
-            <tbody id="cards"></tbody>
-        </table>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th id="cardNameHeader"
+                            class="sortable-header"
+                            onclick="sortCards('name')">
+                            Name <span class="card-sort-arrow"></span>
+                        </th>
+
+                        <th id="cardAmountHeader"
+                            class="sortable-header"
+                            onclick="sortCards('amount')">
+                            Amount <span class="card-sort-arrow"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="cards"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- ------- OOVERLAY ------- -->
@@ -102,6 +156,7 @@
         <input type="input" id="editTransactionFilter" class="input">
 
         <button class="close-window" id="closeWindow">x</button>
+        <button class="delete-transaction" onclick="deleteTransaction()">Delete Transaction</button>
         <button class="save-button" onclick="saveTransactionChanges()">Save Changes</button>
     </div>
 
@@ -111,12 +166,30 @@
         <input type="input" id="editCardName" class="input">
 
         <button class="close-window" id="closeCardWindow">x</button>
+        <button class="delete-card" onclick="deleteCard()">Delete Card</button>
         <button class="save-button" onclick="saveCardChanges()">Save Changes</button>
     </div>
+<!-- goal edit -->
+    <div class="goal-menu" id="goalMenu" style="display: none;">
+        <p>Goal Name</p>
+        <input type="text" id="goalName" class="input">
+        <br><br>
+        <p>Start Date</p>
+        <input type="date" id="goalStartDate" class="input">
+        <br><br>
+        <p>End Date</p>
+        <input type="date" id="goalEndDate" class="input">
+        <br><br>
+        <p>Goal Amount ($)</p>
+        <input type="number" id="goalAmount" class="input">
+        <button class="close-window" id="closeGoalWindow">x</button>
+        <button class ="delete-goal" id="deleteGoalButton">Delete Goal</button>
+        <button class="save-button" onclick="addGoal()">Save Goal</button>
+    </div>
 </div>
-
 <script>
     window.savedTransactions = {{ transactions | tojson}};
+    window.savedGoals = {{goals | tojson}};
 </script>
 </body>
 </html>
