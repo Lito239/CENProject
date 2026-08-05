@@ -1,4 +1,10 @@
+"""
+Backend module for CurrencyCare.
+
+This module manages backend connections and user financial data.
+"""
 class Card:
+    """Handles all backend operations in regards to cards for CurrencyCare."""
     def __init__(self, card_type, cardholder_name, expiration_date, is_debit, balance):
         self.card_type = card_type
         self.cardholder_name = cardholder_name
@@ -7,9 +13,14 @@ class Card:
         self.balance = balance
 
     def __str__(self):
-        return f"Card(card_type='{self.card_type}', cardholder_name='{self.cardholder_name}', expiration_date='{self.expiration_date}', is_debit={self.is_debit}, balance={self.balance})"
+        """Create a string representation of the object."""
+        return (f"Card(card_type='{self.card_type}', cardholder_name='{self.cardholder_name}', "
+                f"expiration_date='{self.expiration_date}', is_debit={self.is_debit}, "
+                f"balance={self.balance})")
 
-    def edit_card(self, card_type=None, cardholder_name=None, expiration_date=None, is_debit=None, balance=None):
+    def edit_card(self, card_type=None, cardholder_name=None,
+                  expiration_date=None, is_debit=None, balance=None):
+        """Edit an existing card object."""
         if card_type is not None:
             self.card_type = card_type
         if cardholder_name is not None:
@@ -22,6 +33,7 @@ class Card:
             self.balance = balance
 
 class Expense:
+    """Handles all backend operations in regards to expenses for CurrencyCare."""
     def __init__(self, amount, category, day, month, year, card, description=""):
         self.amount = amount
         self.category = category
@@ -32,9 +44,14 @@ class Expense:
         self.description = description
 
     def __str__(self):
-        return f"Expense(amount={self.amount}, category='{self.category}', date='{self.date_day}/{self.date_month}/{self.date_year}', card='{self.card}', description='{self.description}')"
+        """Create a string representation of the object."""
+        return (f"Expense(amount={self.amount}, category='{self.category}', "
+                f"date='{self.date_day}/{self.date_month}/{self.date_year}', "
+                f"card='{self.card}', description='{self.description}')")
 
-    def edit_expense(self, amount=None, category=None, day=None, month=None, year=None, card=None, description=None):
+    def edit_expense(self, amount=None, category=None,
+                     day=None, month=None, year=None, card=None, description=None):
+        """Edit an existing expense object."""
         if amount is not None:
             self.amount = amount
         if category is not None:
@@ -51,7 +68,9 @@ class Expense:
             self.description = description
 
 class User:
+    """Handles all user operations in regards to users for CurrencyCare."""
     def __init__(self, name, email, password):
+        """Initialize the user object."""
         self.name = name
         self.email = email
         self.password = password #Maybe check strength of password
@@ -59,19 +78,23 @@ class User:
 
     #Methods
     def add_expense(self, expense):
+        """Add an expense to the user."""
         self.expenses.append(expense)
 
     def remove_expense(self, expense):
+        """Remove an expense from the user."""
         if expense in self.expenses:
             self.expenses.remove(expense)
         else:
             print("Expense not found.")
 
     def print_expenses(self):
+        """Print the expenses stored in the user."""
         for expense in self.expenses:
             print(expense)
 
     def edit_user(self, name=None, email=None, password=None):
+        """Edit an existing user object."""
         if name is not None:
             self.name = name
         if email is not None:
@@ -80,6 +103,7 @@ class User:
             self.password = password
 
 def CheckEmailValidity(email):
+    """Check if an email address is valid."""
     if "@" not in email or "." not in email:
         return False
     last_dot = email.rfind(".")
@@ -92,13 +116,15 @@ def CheckEmailValidity(email):
         return False
     return True
 
-def CheckPasswordStrength(password): 
+def CheckPasswordStrength(password):
+    """Check if a password is good enough to our standard."""
     score = 0
     if len(password) >= 8:
         score += 1
     if any(character.isdigit() for character in password):
         score += 1
-    if (any(character.isupper() for character in password) and any(character.islower() for character in password)):
+    if (any(character.isupper() for character in password) and
+            any(character.islower() for character in password)):
         score += 1
     special_characters = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
     if any(character in special_characters for character in password):
@@ -106,6 +132,7 @@ def CheckPasswordStrength(password):
     return score
 
 def RandomPasswordGenerator(length=12):
+    """Generate a random password."""
     import random
     import string
     password = "".join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -113,26 +140,6 @@ def RandomPasswordGenerator(length=12):
     return password
 
 def main():
-    #Only for testing
-    user = User("J", "j@j.com", "pass")
-    OneExpense = Expense(10, "Food", 1, 1, 2024, "Visa", "Lunch")
-    user.add_expense(OneExpense)
-    TwoExpense = Expense(20, "Flood", 2, 2, 2024, "Visa", "Lunch")
-    user.add_expense(TwoExpense)
-    ThreeExpense = Expense(30, "Frodo", 3, 3, 2024, "Visa", "Brunch")
-    user.add_expense(ThreeExpense)
-    user.print_expenses()
-    user.expenses[0].edit_expense(amount=50, description="Dinner")
-    print(user.expenses[0])
-    print(CheckEmailValidity("user@example.com"))
-    print(CheckEmailValidity("test"))
-    print(CheckEmailValidity("test@test"))
-    print(CheckEmailValidity("test@test."))
-    print(CheckEmailValidity("@test.com"))
-    print(CheckEmailValidity("test@test.c1m"))
-    print(CheckEmailValidity("test.test@com"))
-    print(CheckEmailValidity("test@test.com"))
-    print(RandomPasswordGenerator())
     pass
 
 if __name__ == "__main__":
