@@ -1,11 +1,18 @@
+"""
+The authorization module for CurrencyCare.
+
+This module manages every database action for currency care
+"""
 import json
 class PythonDatabase:
     def __init__(self):
+        """initialize method for initializing the database """
         self.filename = "finance_data.json"
         self.data = {"users": [], "cards": [], "transactions": [], "goals":[]}
         self.next_ids = {"users": 1, "cards": 1, "transactions": 1, "goals":1}
         self.load()
     def load(self):
+        """load the data from json file"""
         try:
             with open(self.filename, "r") as file:
                 saved = json.load(file)
@@ -19,9 +26,11 @@ class PythonDatabase:
         except (FileNotFoundError, json.JSONDecodeError):
             self.save()
     def save(self):
+        """save the data to json file"""
         with open(self.filename, "w") as file:
             json.dump({"data": self.data, "next_ids": self.next_ids}, file, indent=4)
     def add_user(self, username, email=None, password=None):
+        """add a user to the database"""
         for everyuser in self.data["users"]:
             if everyuser["username"] == username:
                 return "username already exists"
@@ -38,26 +47,31 @@ class PythonDatabase:
         self.save()
         return new_user["id"]
     def login(self, username, password):
+        """login a user to the database"""
         for user in self.data["users"]:
             if user["username"] == username and user["password"] == password:
                 return True
         return False
     def get_user(self, user_id):
+        """get a user from the database"""
         for user in self.data["users"]:
             if user["id"] == user_id:
                 return user
         return None
     def get_user_by_email(self, email):
+        """get a user from the database"""
         for user in self.data["users"]:
             if user["email"].lower() == email.lower():
                 return user
         return None
     def get_user_by_username(self, username):
+        """get a user from the database"""
         for user in self.data["users"]:
             if user["username"].lower() == username.lower():
                 return user
         return None
     def update_user(self, user_id, user_object):
+        """update a user from the database"""
         for stored_user in self.data["users"]:
             if stored_user["id"] == user_id:
                 stored_user["username"] = user_object.name
@@ -67,6 +81,7 @@ class PythonDatabase:
                 return True
         return False
     def add_card(self, user_id, card):
+        """add a card to the database"""
         new_card = {
             "id": self.next_ids["cards"],
             "user_id": user_id,
@@ -81,8 +96,10 @@ class PythonDatabase:
         self.save()
         return new_card["id"]
     def get_cards(self, user_id):
+        """get a card from the database"""
         return [card for card in self.data["cards"] if card["user_id"] == user_id]
     def update_card(self, card_id, user_id, card_object):
+        """update a card from the database"""
         for stored_card in self.data["cards"]:
             if (stored_card["id"] == card_id and stored_card["user_id"] == user_id):
                 stored_card["card_type"] = card_object.card_type
@@ -94,6 +111,7 @@ class PythonDatabase:
                 return True
         return False
     def add_transaction(self, user_id, card_id, transaction_name, amount=None, transaction_date=None, category=None, card_name = None):
+        """add a transaction to the database"""
         new_transaction = {
             "id": self.next_ids["transactions"],
             "user_id": user_id,
@@ -110,8 +128,10 @@ class PythonDatabase:
         return new_transaction["id"]
 
     def get_transactions(self, user_id):
+        """get a transaction from the database"""
         return [transaction for transaction in self.data["transactions"] if transaction["user_id"] == user_id]
     def add_goal(self,user_id,goal_name, start_date, end_date,goal_amount):
+        """add a goal to the database"""
         new_goal={
             "id": self.next_ids["goals"], "user_id": user_id, "goal_name":goal_name,"start_date":start_date,"end_date":end_date,"goal_amount":goal_amount}
         self.data["goals"].append(new_goal)
@@ -119,8 +139,10 @@ class PythonDatabase:
         self.save()
         return new_goal["id"]
     def get_goals(self,user_id):
+        """get a goal from the database"""
         return[goal for goal in self.data["goals"] if goal["user_id"]==user_id]
     def update_goal(self, goal_id, user_id,goal_name,start_date, end_date,goal_amount):
+        """update a goal from the database"""
         for goal in self.data["goals"]:
             if goal["id"] ==goal_id and goal["user_id"]==user_id:
                 goal["goal_name"] =goal_name
@@ -131,6 +153,7 @@ class PythonDatabase:
                 return True
         return False
     def delete_goal(self, goal_id, user_id):
+        """delete a goal from the database"""
         for goal in self.data["goals"]:
             if goal["id"]==goal_id and goal["user_id"]==user_id:
                 self.data["goals"].remove(goal)
@@ -138,6 +161,7 @@ class PythonDatabase:
                 return True
         return False
     def update_transaction(self, transaction_id, user_id, transaction_name=None, amount=None, card_id=None, transaction_date=None, category=None):
+        """update a transaction from the database"""
         expense_object = transaction_name if hasattr(transaction_name, "date_day") else None
         for transaction in self.data["transactions"]:
             if transaction["id"] == transaction_id and transaction["user_id"] == user_id:
@@ -160,8 +184,8 @@ class PythonDatabase:
                 self.save()
                 return True
         return False
-
     def delete_transaction(self, transaction_id, user_id):
+        """delete a transaction from the database"""
         for transaction in self.data["transactions"]:
             if transaction["id"] == transaction_id and transaction["user_id"] == user_id:
                 self.data["transactions"].remove(transaction)
