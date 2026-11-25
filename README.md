@@ -9,7 +9,7 @@ Product Manager: Wilfredo Rodriguez
 Scrum Master: Jacob Mcdaniel
 
 
-Frontend Developer: Valeriya Lunyakova
+Frontend Developer: V.L.
 
 
 Backend Developer: Christian Shaw
